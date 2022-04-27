@@ -9,9 +9,9 @@ This plugin supports dynamic accounts loading from Git repository by cloning a r
 
 ### Requirements
 1. Must be used with Spinnaker version 1.24 (TODO) or higher.
-2. Clouddriver must have support for Dynamic Accounts Loading [Google Accounts Support](https://github.com/kirangodishala/clouddriver/tree/1.26.x-external-accounts-support)
+ 2. Clouddriver must have support for Dynamic Accounts Loading [Google Accounts Support](https://github.com/kirangodishala/clouddriver/tree/1.26.x-external-accounts-support) & [Account Management](https://github.com/spinnaker/governance/blob/master/rfc/account-management.md)
 3. Must have a Git repository with credentials, filename to access the Yml/JSON file to load Google Accounts. 
-   E.g. File stored in Git repository [accounts.yml](https://github.com/ashish-ck/git-accounts-yml/blob/main/accounts.yml)
+   <br/>E.g. File stored in Git repository [accounts.yml](https://github.com/ashish-ck/git-accounts-yml/blob/main/accounts.yml)
 
 ```yaml
 google:
@@ -47,7 +47,7 @@ google:
    The above command will produce a zip file, `git-account-registration-plugin-spinnaker/git-account-registration-plugin/build/distributions/git-account-registration-plugin*.zip`.
 3. Publish the release at GitHub site and update `plugins.json` with the URL of plugin zip. or
    Copy the zip file to Clouddriver plugin directory. Defaults to `/opt/clouddriver/plugins`. This directory can be specified by the `plugins-root-path` configuration property.
-4. Enable the plugin by placing the following in [Clouddriver profile](https://spinnaker.io/reference/halyard/custom/#custom-profiles)
+4. Enable the plugin by placing the following in Clouddriver [profile](https://spinnaker.io/reference/halyard/custom/#custom-profiles).
 
 
 ### Setup
@@ -93,9 +93,7 @@ credentials:
 
 ### Note
 1. Plugin clones a Git repository using the Git credentials, provided in plugin configuration and fetches a filename (Yml/JSON).
-   Expectation is that the remote host will return accounts that were updated after the specified time by the field.
-   This is done to avoid returning and processing all accounts every time sync occurs.
-   Attribute jsonPath of Google Account is stored as an encrtyped secret file. [profile](https://spinnaker.io/docs/reference/halyard/secrets/gcs-secrets/)
+   Attribute jsonPath of Google Account is stored as an encrypted secret file. [profile](https://spinnaker.io/docs/reference/halyard/secrets/gcs-secrets/)
    <br/>E.g. ```jsonPath: encryptedFile:gcs!b:gce-accounts-v1!f:gce-account.json```
 2. Google Account are added/removed dynamically without restarting any services.
 

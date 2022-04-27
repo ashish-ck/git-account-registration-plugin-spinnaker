@@ -28,11 +28,11 @@ dependencies {
   compileOnly (group: 'org.yaml', name: 'snakeyaml', version: '1.23')
   compileOnly "org.codehaus.groovy:groovy-all:+"
   compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.9.RELEASE')
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins', version: "${korkVersion}")
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-credentials', version: "${korkVersion}")
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-secrets', version: "${korkVersion}")
-  compileOnly (group: 'io.spinnaker.kork', name: 'kork-web', version: "${korkVersion}")
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}") { exclude group: 'org.slf4j' }
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins', version: "${korkVersion}") { exclude group: 'org.slf4j' }
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-credentials', version: "${korkVersion}") { exclude group: 'org.slf4j' }
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-secrets', version: "${korkVersion}") { exclude group: 'org.slf4j' }
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-web', version: "${korkVersion}") { exclude group: 'org.slf4j' }
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.9.RELEASE')
   compileOnly "io.spinnaker.clouddriver:clouddriver-api:${clouddriverVersion}"
   compileOnly "io.spinnaker.clouddriver:cats-core:${clouddriverVersion}"
@@ -43,7 +43,7 @@ dependencies {
   compileOnly "io.spinnaker.clouddriver:clouddriver-google-common:${clouddriverVersion}"
   compileOnly 'org.projectlombok:lombok:+'
   annotationProcessor "org.projectlombok:lombok:+"
-  annotationProcessor("org.pf4j:pf4j:$pf4jVersion")
+  annotationProcessor("org.pf4j:pf4j:$pf4jVersion") { exclude group: 'org.slf4j' }
   testImplementation "io.spinnaker.clouddriver:clouddriver-api:${clouddriverVersion}"
   testImplementation "io.spinnaker.clouddriver:cats-core:${clouddriverVersion}"
   testImplementation "io.spinnaker.clouddriver:clouddriver-security:${clouddriverVersion}"
@@ -59,7 +59,11 @@ dependencies {
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.5.RELEASE'
   testImplementation group: 'org.springframework', name: 'spring-web', version: '5.2.9.RELEASE'
 }
-
+/*
+configurations.all {
+   exclude group: 'org.slf4j'
+}
+*/
 test {
   useJUnitPlatform()
 }

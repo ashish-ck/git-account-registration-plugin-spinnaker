@@ -22,6 +22,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.netflix.spinnaker.clouddriver.google.config.GoogleConfigurationProperties;
+import com.netflix.spinnaker.kork.secrets.SecretManager;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -55,6 +57,7 @@ import java.util.*;
 
 @Slf4j
 @Component
+@Data
 public class GitAccountsStatus {
     private UsernamePasswordCredentialsProvider httpsUsernamePasswordCredentialsProvider;
     private UsernamePasswordCredentialsProvider httpsOAuthCredentialsProvider;
@@ -66,8 +69,10 @@ public class GitAccountsStatus {
     @Value("#{'${config.credentialType}'.toUpperCase()}")
     private GitCredentialType credentialType;
     private List<GoogleConfigurationProperties.ManagedAccount> accounts;
+    @Autowired
+    private SecretManager secretManager;
 
-    public GitAccountsStatus(){
+    public GitAccountsStatus() {
     }
 
     @Autowired
@@ -155,13 +160,13 @@ public class GitAccountsStatus {
         }
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(inputStream);
-        HashMap map = (HashMap) data.get("google");
-        Boolean isEnabled = (Boolean) map.get("enabled");
-        ArrayList accountsList = (ArrayList) map.get("accounts");
         ObjectMapper mapper = new ObjectMapper();
+        HashMap map = (HashMap) data.get("google");
+        ArrayList accountsList = (ArrayList) map.get("accounts");
         for (int i = 0; i < accountsList.size(); i++) {
             GoogleConfigurationProperties.ManagedAccount managedAccount = mapper.
                     convertValue(accountsList.get(i), GoogleConfigurationProperties.ManagedAccount.class);
+            managedAccount.setJsonPath(secretManager.decryptAsFile(managedAccount.getJsonPath()).toString());
             googleCredentialsDefinitions.add(managedAccount);
             log.info("Fetched Google Account: {} *************************************", managedAccount.toString());
         }

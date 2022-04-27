@@ -20,14 +20,17 @@ import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCrede
 import com.netflix.spinnaker.credentials.CredentialsLifecycleHandler;
 import com.netflix.spinnaker.credentials.MapBackedCredentialsRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.Nullable;
 
 @Slf4j
 public class GoogleCredentialsRepository extends MapBackedCredentialsRepository<GoogleNamedAccountCredentials> {
 
-    @Autowired
     public GoogleCredentialsRepository(CredentialsLifecycleHandler<GoogleNamedAccountCredentials> eventHandler) {
         super("gce", eventHandler);
         log.info("{} started *************************************", this.getClass().getSimpleName());
+    }
+
+    public GoogleCredentialsRepository(String type, @Nullable CredentialsLifecycleHandler<GoogleNamedAccountCredentials> eventHandler) {
+        super("gce", eventHandler);
     }
 }

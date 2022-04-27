@@ -168,7 +168,8 @@ public class GitAccountsStatus {
                     convertValue(accountsList.get(i), GoogleConfigurationProperties.ManagedAccount.class);
             managedAccount.setJsonPath(secretManager.decryptAsFile(managedAccount.getJsonPath()).toString());
             googleCredentialsDefinitions.add(managedAccount);
-            log.info("Fetched Google Account: {} *************************************", managedAccount.toString());
+            log.info("Updated JSON path : {} *************************************", managedAccount.getJsonPath());
+            log.info("Fetched Google Account: {} *************************************", managedAccount);
         }
         this.accounts = ImmutableList.copyOf(googleCredentialsDefinitions);
         return true;
